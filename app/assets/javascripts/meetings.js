@@ -15,7 +15,7 @@ function selectTimeValueByElementId(elementId) {
     document.getElementById('duration-input').value = '';
     var selected = document.getElementById(elementId);
     removeSelected();
-    setDurationInfoText(timeValue);
+    //setDurationInfoText(timeValue);
     selected.className += " selected";
 };
 
