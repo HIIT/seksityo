@@ -65,7 +65,7 @@ RSpec.describe MeetingsController, type: :controller do
       it "renders finnish localization if it is set" do
         @request.env['HTTP_ACCEPT_LANGUAGE'] = "fi"
         get :new
-        expect(response.body).to have_content("Artemiin Sateenvarjo")
+        expect(response.body).to have_content("Artemiksen Sateenvarjo")
       end
       it "renders default localization if headers contain unavailable localization" do
         @request.env['HTTP_ACCEPT_LANGUAGE'] = "fr"

@@ -1,6 +1,6 @@
 fi:
   # Main title
-  title: "Artemiin Sateenvarjo"
+  title: "Artemiksen Sateenvarjo"
 
   # minute / minutes
   minutes_plural: "minuuttia"
@@ -87,5 +87,5 @@ fi:
   user_credits_update_success: "Käyttäjän krediitit päivitetty onnistuneesti"
   user_credits_update_fail: "Käyttäjän krediittien päivittäminen ei onnistunut"
 
-  info_page: "Artemiin sateenvarjo"
+  info_page: "Artemiksen sateenvarjo"
   service_link: "https://www.artemisumbrella.com/?page_id=51&lang=fi"
