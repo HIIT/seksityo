@@ -15,7 +15,7 @@ fi:
   phonenumber_info_title: "Ystäväni puhelinnumero"
   phonenumber_placeholder: "Puhelinnumero"
   phone_number_invalid: "Virheellinen puhelinnumero"
-  duration_info_title: "Odotusaika"
+  duration_info_title: "Odotusaika minuutteina"
   start_meeting_title: "Kaikki valmista?"
   start_meeting_button: "Aloita"
   feedback_link: "Palaute"
