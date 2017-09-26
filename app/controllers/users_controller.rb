@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        cookies['ucd'] = @user.code
+        cookies.permanent['ucd'] = @user.code
         format.html { redirect_to :root, notice: 'A new user was successfully created.' }
         format.json { render 'meetings/new', status: :created}
       else
@@ -33,7 +33,7 @@ class UsersController < ApplicationController
 
     if @user
       cookies.delete 'ucd'
-      cookies['ucd'] = params['id']
+      cookies.permanent['ucd'] = params['id']
     end
     redirect_to :root
 

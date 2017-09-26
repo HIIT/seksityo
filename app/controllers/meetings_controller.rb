@@ -44,13 +44,13 @@ class MeetingsController < ApplicationController
     @meeting.parse_phone_number
     @meeting.create_hashkey
     @meeting.alert_sent = false
-    cookies['nkn'] = @meeting.nickname
-    cookies['pnmr'] = @meeting.phone_number
+    cookies.permanent['nkn'] = @meeting.nickname
+    cookies.permanent['pnmr'] = @meeting.phone_number
 
     respond_to do |format|
       if @meeting.save
         Stat.increment_created(@meeting.get_country_code, @meeting.get_country)
-        cookies['curr_me'] = @meeting.hashkey
+        cookies.permanent['curr_me'] = @meeting.hashkey
         # Reserve one credit to for sending a notification
         decrease_credits
         # Runs send_notification once the timer runs out
