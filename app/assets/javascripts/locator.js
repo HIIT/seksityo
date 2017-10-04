@@ -9,6 +9,7 @@ window.onload = function() {
     var updated = new Date(meeting_updated);
     updated = updated.getTime();
     var now = new Date().getTime();
+    var attempted_update = getCookie("attempted_update")
 
     /* Fetch position using geoPosition library */
     getPosition = function () {
@@ -21,7 +22,8 @@ window.onload = function() {
 
     /* If meeting has not been updated in the last 2 minutes, or has just been created, update location */
     updatePosition = function (){
-      if (updated < (now - 120000) || meeting_updated === meeting_created) {
+      if (updated < (now - 120000) || attempted_update == "true") {
+        setCookie("attempted_update", "true");
         getPosition();
       }
     }
@@ -77,5 +79,25 @@ window.onload = function() {
         document.getElementById('location').innerHTML = "Error: " + p.message;
     }
 
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function setCookie(name, value) {
+            document.cookie = name + "=" + value + ";";
+        }
+    }
 
 }
