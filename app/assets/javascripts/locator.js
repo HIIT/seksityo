@@ -97,7 +97,6 @@ window.onload = function() {
 
     function setCookie(name, value) {
             document.cookie = name + "=" + value + ";";
-        }
     }
 
 }
