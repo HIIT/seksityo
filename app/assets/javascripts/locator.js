@@ -22,7 +22,7 @@ window.onload = function() {
 
     /* If meeting has not been updated in the last 2 minutes, or has just been created, update location */
     updatePosition = function (){
-      if (updated < (now - 120000) || attempted_update == "true") {
+      if (updated < (now - 120000) || attempted_update != "true") {
         setCookie("attempted_update", "true");
         getPosition();
       }

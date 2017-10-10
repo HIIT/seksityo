@@ -100,6 +100,7 @@ class MeetingsController < ApplicationController
       @meeting.delete_job
       @meeting.destroy
       cookies.delete 'curr_me'
+      cookies.delete 'attempted_update'
     end
     redirect_to root_path
   end
