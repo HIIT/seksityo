@@ -96,7 +96,9 @@ window.onload = function() {
     }
 
     function setCookie(name, value) {
-            document.cookie = name + "=" + value + ";";
+        var exp = new Date();
+        exp.setTime(exp.getTime() + 120000);
+        document.cookie = name + "=" + value + "; expires=" +exp.toUTCString()+";";
     }
 
 }

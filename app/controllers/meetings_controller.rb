@@ -111,6 +111,7 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.find_by_hashkey(cookies['curr_me'])
     unless @meeting
       cookies.delete 'curr_me'
+      cookies.delete 'attempted_update'
       redirect_to root_path
       return
     end
@@ -137,6 +138,7 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.find_by_hashkey(cookies['curr_me'])
     if !@meeting
       cookies.delete 'curr_me'
+      cookies.delete 'attempted_update'
       redirect_to root_path
     end
   end
