@@ -45,7 +45,7 @@ RSpec.describe Meeting, type: :model do
     expect(meeting.time_to_live).to eq(0)
   end
   it "send_alert correctly updates alert_sent attribute" do
-    meeting = Meeting.new nickname:"Pekka", phone_number:"+358401231234", duration:-1, confirmed: true
+    meeting = Meeting.new nickname:"Pekka", phone_number:"+358401231234", duration:30, confirmed: true
     meeting.save(:validate => false)
     meeting.send_alert
     expect(meeting.alert_sent).to eq(true)

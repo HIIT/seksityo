@@ -33,9 +33,9 @@ fi:
   less_than_minute: "alle minuutti"
 
   # Alert confirmation page
-  alert_confirmation_title: "Hälytysviesti lähetetty!"
-  alert_confirmation_info_title: "Artemiksellesi on lähetetty hälytysviesti."
-  alert_confirmation_info_text: "Paina nappia palataksesi edelliselle sivulle."
+  alert_confirmation_title: "Viesti lähetetty!"
+  alert_confirmation_info_title: "Artemiksellesi on lähetetty viesti."
+  alert_confirmation_info_text: "Paina nappia jatkaaksesi."
   alert_confirmation_return_button: "Palaa"
 
   # Code generation page

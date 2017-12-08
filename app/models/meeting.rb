@@ -26,14 +26,18 @@ class Meeting < ActiveRecord::Base
   end
 
   def send_notification(locale)
-    I18n.locale = locale
-    ApplicationMailer.notification_email(self).deliver_now
-    Stat.increment_notifications_sent(self.get_country_code, self.get_country)
+    unless self.alert_sent?
+      I18n.locale = locale
+      ApplicationMailer.notification_email(self).deliver_now
+      Stat.increment_notifications_sent(self.get_country_code, self.get_country)
+    end
   end
 
   def send_alert
-    self.update(alert_sent: true)
-    ApplicationMailer.alert_email(self).deliver_now
+    unless self.message_sent
+      self.update(alert_sent: true)
+      ApplicationMailer.alert_email(self).deliver_now
+    end
   end
 
   def validate_phone_number
@@ -75,5 +79,9 @@ class Meeting < ActiveRecord::Base
   def get_country()
     phone = Phonelib.parse(self.phone_number)
     return phone.country
+  end
+
+  def message_sent()
+    return (self.alert_sent? or self.time_to_live==0)
   end
 end

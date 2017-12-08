@@ -19,6 +19,13 @@ RSpec.describe MeetingsController, type: :controller do
       get :show, id: 123
       expect(response).to redirect_to(:root)
     end
+    it "redirects to alert confirmation page if a message has been sent" do
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
+      @meeting.alert_sent=true
+      @meeting.save
+      get :show, id: 1
+      expect(response).to redirect_to(:meetings_alert_confirm)
+    end
   end
   describe "GET alert_confirm" do
     it "renders the alert confirmation template" do

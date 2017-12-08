@@ -55,9 +55,9 @@ en:
   less_than_minute: "less than a minute"
 
   # Alert confirmation page
-  alert_confirmation_title: "Alert sent!"
-  alert_confirmation_info_title: "An alert has been sent to your Artemis."
-  alert_confirmation_info_text: "Press the button to return to the status page."
+  alert_confirmation_title: "A message has been sent!"
+  alert_confirmation_info_title: "A message has been sent to your Artemis."
+  alert_confirmation_info_text: "Press the button below to continue."
   alert_confirmation_return_button: "Return"
 
   # Code generation page

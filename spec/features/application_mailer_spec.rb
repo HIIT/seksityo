@@ -11,6 +11,7 @@ describe 'Mailer' do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Pekka'
     fill_in 'duration-input', with: '1'
+    fill_in 'meeting_phone_number', with: '0401231234'
   end
 
   after :each do
@@ -18,14 +19,12 @@ describe 'Mailer' do
   end
 
   it 'should send message when the timer goes off', js: true do
-    fill_in 'meeting_phone_number', with: '0401231234'
     click_button 'startbutton'
     sleep(0.3)
     open_email('0401231234@textmagic.com')
     expect(current_email).to have_content "Timed message from"
   end
   it 'should send the email to the address specified by user', js: true do
-    fill_in 'meeting_phone_number', with: '0401231234'
     click_button 'startbutton'
     sleep(0.3)
     open_email('0501231234@textmagic.com')

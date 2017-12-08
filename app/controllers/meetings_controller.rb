@@ -9,10 +9,14 @@ class MeetingsController < ApplicationController
   # GET /meetings/1
   # GET /meetings/1.json
   def show
-   @meeting = Meeting.find_by_hashkey(cookies['curr_me'])
-   unless @meeting
-     redirect_to :root
-   end
+    @meeting = Meeting.find_by_hashkey(cookies['curr_me'])
+    unless @meeting
+      redirect_to :root
+      return
+    end
+    if @meeting.message_sent
+      redirect_to :meetings_alert_confirm
+    end
   end
 
   # GET /meetings/new
@@ -94,7 +98,7 @@ class MeetingsController < ApplicationController
     @meeting = Meeting.find_by_hashkey(cookies['curr_me'])
     if @meeting
       Stat.increment_confirmed(@meeting.get_country_code, @meeting.get_country)
-      if @meeting.find_job
+      if @meeting.find_job or @meeting.alert_sent?
         increment_credits
       end
       @meeting.delete_job
@@ -114,6 +118,9 @@ class MeetingsController < ApplicationController
       cookies.delete 'attempted_update'
       redirect_to root_path
       return
+    end
+    if @meeting.message_sent
+      redirect_to :meetings_alert_confirm
     end
     decrease_credits
     @meeting.send_alert
