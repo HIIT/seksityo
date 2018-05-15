@@ -47,18 +47,19 @@ en:
   # Status page
   status_page_title: "Informing your Artemis in"
   notification_sent_text: "A message has been sent to your Artemis!"
-  ok_confirmation_title: "Are you safe?"
-  ok_confirmation_button: "I'm OK!"
+  ok_confirmation_title: "All clear?"
+  ok_confirmation_button: "Shut down timer"
   send_alert_title: "Are you in danger?"
   send_alert_button: "Send Alert!"
-  change_time_button: "+ 10 minutes"
+  change_time_tittle: "Add more time?"
+  change_time_button: "+10 minutes"
   less_than_minute: "less than a minute"
 
   # Alert confirmation page
-  alert_confirmation_title: "A message has been sent!"
+  alert_confirmation_title: "An alert has been sent!"
   alert_confirmation_info_title: "A message has been sent to your Artemis."
   alert_confirmation_info_text: "Press the button below to continue."
-  alert_confirmation_return_button: "Return"
+  alert_confirmation_return_button: "Back to start"
 
   # Code generation page
   code_generation_title: "A personal code has been created for you."

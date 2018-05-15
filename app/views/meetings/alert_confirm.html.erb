@@ -4,11 +4,11 @@
 <div class="actions">
   <div class="field-section color-2">
     <div class="field-explanation">
-      <h2><%= t('alert_confirmation_info_title') %></h2>
-      <p><%= t('alert_confirmation_info_text') %></p>
+      <!-- <h2><%= t('alert_confirmation_info_title') %></h2> -->
+      <!--<p><%= t('alert_confirmation_info_text') %></p>-->
     </div>
     <!--<%= button_to "#{ t('alert_confirmation_return_button')}", :root, :method => "get", class: 'submitbutton' %>-->
-    <%= button_to "#{t('ok_confirmation_button')}", {action: "meeting_ok", controller: "meetings"}, class: 'submitbutton' %>
+    <%= button_to "#{t('alert_confirmation_return_button')}", {action: "meeting_ok", controller: "meetings"}, class: 'submitbutton' %>
   </div>
 </div>
 

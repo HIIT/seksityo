@@ -25,18 +25,19 @@ fi:
   # Status page
   status_page_title: "Artemiksellesi ilmoitetaan kun on kulunut"
   notification_sent_text: "Artemiksellesi on lähetetty viesti!"
-  ok_confirmation_title: "Oletko turvassa?"
-  ok_confirmation_button: "Olen OK!"
+  ok_confirmation_title: "Vaara ohi?"
+  ok_confirmation_button: "Sammuta ajastin"
   send_alert_title: "Oletko vaarassa?"
-  send_alert_button: "Lähetä Hälytys!"
-  change_time_button: "+ 10 minuuttia"
+  send_alert_button: "Lähetä hälytys heti!"
+  change_time_tittle: "Lisää aikaa?"
+  change_time_button: "+10 minuuttia"
   less_than_minute: "alle minuutti"
 
   # Alert confirmation page
-  alert_confirmation_title: "Viesti lähetetty!"
+  alert_confirmation_title: "Hälytys lähetetty!"
   alert_confirmation_info_title: "Artemiksellesi on lähetetty viesti."
   alert_confirmation_info_text: "Paina nappia jatkaaksesi."
-  alert_confirmation_return_button: "Palaa"
+  alert_confirmation_return_button: "Aloitusnäyttöön"
 
   # Code generation page
   code_generation_title: "Sinulle on luotu henkilökohtainen koodi."

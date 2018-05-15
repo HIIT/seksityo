@@ -133,11 +133,12 @@ h1{
   width: 50px;
 }
 
+
 .submitbutton{
   @include button_style(#dc2d2d);
 
 
-  text-transform: uppercase;
+  //text-transform: uppercase;
   color: white;
   border: 0px !important;
 }
@@ -235,7 +236,7 @@ h1{
 .field-section.color-2 .submitbutton {
 
   background-color: #009245 !important;
-  text-transform: uppercase;
+  //text-transform: uppercase;
   color: white;
   border: 0px !important;
 

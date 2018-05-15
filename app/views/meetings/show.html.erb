@@ -34,6 +34,9 @@
     </div>
 
     <div class="field-section color-2">
+      <div class="field-explanation">
+        <!-- <h2><%= t('change_time_tittle') %></h2> -->
+      </div>
       <%= button_to "#{ t('change_time_button')} ", {action: "add_time", controller: "meetings"}, class:'changetimebutton'%>
     </div>
 <% end %>
@@ -43,7 +46,7 @@
 
   <div class="field-section color-2">
     <div class="field-explanation">
-      <h2><%= t('ok_confirmation_title') %></h2>
+      <!-- <h2><%= t('ok_confirmation_title') %></h2> -->
       <!-- <p><%= t('ok_confirmation_text') %></p> -->
     </div>
     <%= button_to "#{t('ok_confirmation_button')}", {action: "meeting_ok", controller: "meetings"}, class: 'submitbutton' %>
@@ -51,7 +54,7 @@
 
   <div class="field-section color-3">
     <div class="field-explanation">
-      <h2><%= t('send_alert_title') %></h2>
+      <!-- <h2><%= t('send_alert_title') %></h2> -->
       <!-- <p><%= t('send_alert_text') %></p> -->
     </div>
     <%= button_to "#{ t('send_alert_button')} ", {action: "send_alert", controller: "meetings"}, class: 'alertbutton' %>
