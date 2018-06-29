@@ -1,11 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe MeetingsController, type: :controller do
+
   before :each do
     u = User.create({phone_number: "9991231234"})
     u.credits = 100
     u.save
     @request.cookies['ucd'] = u.code
+    allow(Meeting).to receive(:send_message).and_return(1)
+    allow(Meeting).to receive(:update_status).and_return("-")
   end
   describe "GET show" do
     it "renders the show template" do
@@ -26,6 +29,15 @@ RSpec.describe MeetingsController, type: :controller do
       get :show, id: 1
       expect(response).to redirect_to(:meetings_alert_confirm)
     end
+    it "creates a view impression" do
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
+      @meeting.alert_sent=true
+      @meeting.save
+      expect(Impression.all.length).to eq(0)
+      get :show, id: 1
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("view")
+    end
   end
   describe "GET alert_confirm" do
     it "renders the alert confirmation template" do
@@ -42,11 +54,27 @@ RSpec.describe MeetingsController, type: :controller do
       get :alert_confirm
       expect(response).to redirect_to("/")
     end
+    it "creates a view impression" do
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 42)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      expect(Impression.all.length).to eq(0)
+      get :alert_confirm
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("view")
+    end
   end
   describe "GET new" do
     it "renders the new template" do
       get :new
       expect(response).to render_template("new")
+    end
+    it "creates a view impression" do
+      expect(Impression.all.length).to eq(0)
+      get :new
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("view")
     end
 =begin
     it "redirects to phone input if no user" do
@@ -156,13 +184,18 @@ RSpec.describe MeetingsController, type: :controller do
     end
     it "should create a delayed job" do
       meeting_params = {:nickname => "DelayedForEver", :phone_number => "0401231234", :duration => "1"}
-      expect {post :create, :meeting => meeting_params}.to change {Delayed::Job.count}.by(1)
+      expect {post :create, :meeting => meeting_params}.to change {Delayed::Job.count}.by(2)
     end
     it "should run the delayed job" do
       meeting_params = {:nickname => "BackgroundProcessed", :phone_number => "0401231234", :duration => "1"}
       Delayed::Worker.delay_jobs = false
       expect {post :create, :meeting => meeting_params}.to change {Delayed::Job.count}.by(0)
       Delayed::Worker.delay_jobs = true
+    end
+    it "should create a meeting_created impression" do
+      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      expect { post :create, :meeting => meeting_params }.to change(Impression, :count).by(2)
+      expect(Impression.last.impression_type).to eq("meeting_created")
     end
   end
   describe "PUT update" do
@@ -225,6 +258,50 @@ RSpec.describe MeetingsController, type: :controller do
       post :send_alert
       expect(response).to redirect_to(:meetings_alert_confirm)
     end
+    it "should create an alert_sent impression" do
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      expect(Impression.all.length).to eq(0)
+      post :send_alert
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("alert_sent")
+    end
+    it "should not exceed maximum daily limit" do
+      Meeting.stub(:max_per_user_per_day) {1}
+      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "0401231234", duration: 1300)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(0)
+      post :send_alert
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
+      @meeting = Meeting.create(nickname: "One that is not", phone_number: "0401231234", duration: 1300)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      post :send_alert
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
+      expect(response).to redirect_to(:max_per_user_per_day)
+    end
+    it "should not exceed maximum total limit" do
+      Meeting.stub(:max_total_per_day) {1}
+      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "0401231234", duration: 1300)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(0)
+      post :send_alert
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
+      @meeting = Meeting.create(nickname: "One that is not", phone_number: "0401231234", duration: 1300)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      post :send_alert
+      expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
+      expect(response).to redirect_to(:max_total_per_day)
+    end
   end
   describe "POST meeting_ok" do
     it "should remove cookie" do
@@ -248,9 +325,9 @@ RSpec.describe MeetingsController, type: :controller do
       meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
       post :create, :meeting => meeting_params
       @meeting = Meeting.find_by_nickname("Pekka")
-      expect(Delayed::Job.all.length).to eq(1)
+      expect(Delayed::Job.all.length).to eq(2)
       post :meeting_ok
-      expect(Delayed::Job.all.length).to eq(0)
+      expect(Delayed::Job.all.length).to eq(1)
     end
     it "should redirect to root" do
       @meeting = Meeting.create(nickname: "Test", phone_number: "testi@testi.test", duration: 10)
@@ -260,6 +337,16 @@ RSpec.describe MeetingsController, type: :controller do
       @meeting.save
       post :meeting_ok
       expect(response).to redirect_to(:root)
+    end
+    it "should create a meeting_ok impression" do
+      @meeting = Meeting.create(nickname: "Testuser", phone_number: "0401231234", duration: 10)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      expect(Impression.all.length).to eq(0)
+      post :meeting_ok
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("meeting_ok")
     end
 =begin
     it "should refund notification credits if not used" do
@@ -295,6 +382,17 @@ RSpec.describe MeetingsController, type: :controller do
       post :add_time
       job = @meeting.find_job
       expect(job.run_at).to eq(start_time+10.minutes)
+    end
+    it "should create a time_added impression" do
+      @meeting = Meeting.create(nickname: "Pekka", phone_number: "9991231234", duration: 10)
+      @meeting.create_hashkey
+      @request.cookies['curr_me'] = @meeting.hashkey
+      @meeting.save
+      @meeting.delay(run_at: @meeting.time_to_live.minutes.from_now).send_notification
+      expect(Impression.all.length).to eq(0)
+      post :add_time
+      expect(Impression.all.length).to eq(1)
+      expect(Impression.first.impression_type).to eq("time_added")
     end
   end
   describe "GET meeting_exists" do

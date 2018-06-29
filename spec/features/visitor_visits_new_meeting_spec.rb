@@ -17,6 +17,7 @@ feature 'New meeting' do
   end
 =end
   scenario 'user visits new meeting' do
+    allow(Meeting).to receive(:has_exceeded_max_total).and_return(false)
     u = User.create(phone_number: "9991231234")
     u.credits = 100
     u.save
@@ -26,6 +27,7 @@ feature 'New meeting' do
     expect(page).to have_content("Artemis' Umbrella")
   end
   scenario 'user with existing meeting visits new meeting and gets redirected to status page', js: true do
+    allow(Meeting).to receive(:has_exceeded_max_total).and_return(false)
     u = User.create(phone_number: "9991231234")
     u.credits = 100
     u.save

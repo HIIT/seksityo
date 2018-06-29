@@ -2,6 +2,7 @@ require 'rails_helper'
 
 feature 'Root redirection' do
   scenario 'existing user with credits visits root' do
+    allow(Meeting).to receive(:has_exceeded_max_total).and_return(false)
     u = User.create(phone_number: "9991231234")
     u.credits = 100
     u.save

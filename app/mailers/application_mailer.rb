@@ -16,4 +16,8 @@ class ApplicationMailer < ActionMailer::Base
     @recovery_link = recovery_link
     mail(to: @user.phone_number+'@textmagic.com', subject: "Link to Artemis' Umbrella!")
   end
+
+  def daily_total_message_limit_exceeded_email()
+    mail(to: "artemisumbrella@gmail.com", subject: "Too many messages have been sent today!")
+  end
 end

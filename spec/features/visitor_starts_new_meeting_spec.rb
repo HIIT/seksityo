@@ -6,6 +6,7 @@ feature 'When starting a new meeting' do
     u.credits = 100
     u.save
     create_cookie('ucd', u.code)
+    allow(Meeting).to receive(:has_exceeded_max_total).and_return(false)
   end
 
   scenario 'user can create a meeting', js: true do

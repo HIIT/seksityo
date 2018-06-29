@@ -14,7 +14,7 @@
 <body>
 
 
-<div class="main">
+<div class="main" <%= @impression_statuses.blank? ? '' : "id=main" %>>
   <div class="language-header">
     <% if @showChangeLink %>
         <a class="language-select" id="language-selector" href="#" onclick="switchLanguage()"><%= @changeLinkText %></a>

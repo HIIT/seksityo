@@ -28,6 +28,10 @@ Rails.application.routes.draw do
 
   get 'admin' => 'admins#index', as: 'admin'
 
+  get 'admin/:month' => 'admins#month_stat', as: 'month_stat'
+
+  get 'admin/custom/interval' => 'admins#custom_stat', as: 'custom_stat'
+
   delete 'admin/delete/:id' => 'meetings#destroy'
 
 
@@ -36,6 +40,9 @@ Rails.application.routes.draw do
   get 'users/id=:id' => 'users#recover_cookie'
 
   get 'users' => 'users#phone_form'
+
+  get 'max_per_user_per_day' => 'meetings#max_per_user_per_day'
+  get 'max_total_per_day' => 'meetings#max_total_per_day'
 
   # Language selection link for info website
   get 'lang=:lang' => 'application#set_locale_from_link'

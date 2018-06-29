@@ -1,0 +1,74 @@
+<h1><%= t('administration_page_title') %></h1>
+
+<% if flash[:notify] %>
+    <div class="notify" id="notify"><%= flash[:notify] %></div>
+<% end %>
+<div class="field-section">
+  <h2><%= t('daily_usage_statistics') %></h2>
+  <%= link_to t('link_to_monthly_stats'), admin_path %>
+  <table class="admin-table">
+    <thead>
+    <tr>
+      <th><%= sort_link("impression", "country", t('country')) %></th>
+      <th><%= sort_link("impression", "date", t('date')) %></th>
+      <th><%= sort_link("impression", "views", t('views')) %></th>
+      <th><%= sort_link("impression", "created", t('created')) %></th>
+      <th><%= sort_link("impression", "timers_stopped", t('timers_stopped')) %></th>
+      <th><%= sort_link("impression", "alerts_sent", t('alerts_sent')) %></th>
+      <th><%= sort_link("impression", "notifications_sent", t('notifications_sent')) %></th>
+      <th><%= sort_link("impression", "messages_resent", t('messages_resent')) %> </th>
+      <th><%= sort_link("impression", "resent_messages_delivered", t('resent_messages_delivered')) %> </th>
+      <th><%= sort_link("impression", "location_percentage", t('location_percentage')) %></th>
+      <% @impression_statuses.each do |status| %>
+        <th><%= sort_link("impression", status, t(status))%></th>
+      <% end %>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @day_stats.each do |stat| %>
+        <tr>
+          <td><%= stat["country"] %></td>
+          <td><%= stat["date"] %></td>
+          <td><%= stat["views"] %></td>
+          <td><%= stat["created"] %></td>
+          <td><%= stat["timers_stopped"] %></td>
+          <td><%= stat["alerts_sent"] %></td>
+          <td><%= stat["notifications_sent"] %></td>
+          <td><%= stat["messages_resent"] %></td>
+          <td><%= stat["resent_messages_delivered"] %></td>
+          <td><%= stat["location_percentage"] %>%</td>
+          <% @impression_statuses.each do |status_code| %>
+              <th><%= stat[status_code] %>%</th>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="stat-explanation">
+  <h2><%= t('explanations_e')%></h2>
+  <p><b><%= t('country')%>:</b> <%= t('country_e')%> <%= t('no_meetings_created_e')%></p>
+  <p><b><%= t('views')%>:</b> <%= t('views_e')%></p>
+  <p><b><%= t('created')%>:</b> <%= t('created_e')%></p>
+  <p><b><%= t('timers_stopped')%>:</b> <%= t('timers_stopped_e')%></p>
+  <p><b><%= t('alerts_sent')%>:</b> <%= t('alerts_sent_e')%></p>
+  <p><b><%= t('notifications_sent')%>:</b> <%= t('notifications_sent_e')%></p>
+  <p><b><%= t('messages_resent')%>:</b> <%= t('messages_resent_e')%></p>
+  <p><b><%= t('resent_messages_delivered')%>:</b> <%= t('resent_messages_delivered_e')%></p>
+  <p><b><%= t('location_percentage')%>:</b> <%= t('location_percentage_e')%></p>
+
+  <br>
+  <p><b><%= t('text_magic_status_e')%></b></p>
+  <p><b><%= t('q')%>:</b> <%= t('q_e')%></p>
+  <p><b><%= t('r')%>:</b> <%= t('r_e')%></p>
+  <p><b><%= t('a')%>:</b> <%= t('a_e')%></p>
+  <p><b><%= t('b')%>:</b> <%= t('b_e')%></p>
+  <p><b><%= t('d')%>:</b> <%= t('d_e')%></p>
+  <p><b><%= t('f')%>:</b> <%= t('f_e')%></p>
+  <p><b><%= t('e')%>:</b> <%= t('e_e')%></p>
+  <p><b><%= t('j')%>:</b> <%= t('j_e')%></p>
+  <p><b><%= t('u')%>:</b> <%= t('u_e')%></p>
+  <p><b><%= t('s')%>:</b> <%= t('s_e')%></p>
+</div>

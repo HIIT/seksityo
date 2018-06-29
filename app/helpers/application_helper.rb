@@ -21,6 +21,8 @@ module ApplicationHelper
       link_to title, {:meeting_sort => column, :meeting_direction => direction}, {:class => css_class}
     when 'user'
       link_to title, {:user_sort => column, :user_direction => direction}, {:class => css_class}
+    when 'impression'
+      link_to title, {:impression_sort => column, :impression_direction => direction}, {:class => css_class}
     end
   end
 end
