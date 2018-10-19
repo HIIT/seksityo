@@ -114,6 +114,9 @@ class Meeting < ActiveRecord::Base
     unless self.phone_number == '9991231234' or phone.valid?
       errors.add(:phone_number, "Phone number is invalid.")
     end
+    if self.phone_number[0] == "0"
+      errors.add(:phone_number, "Country code missing.")
+    end
   end
 
   def parse_phone_number

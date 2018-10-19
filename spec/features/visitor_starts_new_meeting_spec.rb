@@ -12,7 +12,7 @@ feature 'When starting a new meeting' do
   scenario 'user can create a meeting', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Pekka'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     fill_in 'duration-input', with: '11'
     click_button 'startbutton'
 
@@ -41,6 +41,16 @@ feature 'When starting a new meeting' do
 
     expect(page).to have_content('Phone number is invalid')
   end
+  scenario 'user cannot create a meeting without a country code', js:true do
+    visit '/meetings/new'
+    fill_in 'meeting_nickname', with: 'Pekka'
+    fill_in 'meeting_phone_number', with: '0442890713'
+    fill_in 'duration-input', with: '111'
+    click_button 'startbutton'
+
+    expect(page).to have_content('The phone number needs to have a country code')
+
+  end
   scenario 'user can create a meeting with a kenyan phone number', js:true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Pekka'
@@ -53,7 +63,7 @@ feature 'When starting a new meeting' do
   scenario 'user sees manually input duration on status page', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Matti'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     fill_in 'duration-input', with: '5'
     click_button 'startbutton'
 
@@ -62,7 +72,7 @@ feature 'When starting a new meeting' do
   # scenario 'user sees selected 2h duration on status page', js: true do
   #   visit '/meetings/new'
   #   fill_in 'meeting_nickname', with: 'Sami'
-  #   fill_in 'meeting_phone_number', with: '0401231234'
+  #   fill_in 'meeting_phone_number', with: '9991231234'
   #   find('#select2h').click
   #   click_button 'startbutton'
   #   expect(page).to have_content('120 minutes')
@@ -70,7 +80,7 @@ feature 'When starting a new meeting' do
   scenario 'user sees selected 1h duration on status page', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Jyrki'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     find('#select1h').click
     click_button 'startbutton'
     expect(page).to have_content('60 minutes')
@@ -78,7 +88,7 @@ feature 'When starting a new meeting' do
   scenario 'user sees selected 30min duration on status page', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Hilla'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     find('#select30m').click
     click_button 'startbutton'
     expect(page).to have_content('30 minutes')
@@ -86,7 +96,7 @@ feature 'When starting a new meeting' do
   scenario 'user selects duration and then manually enters one', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Tatti'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     find('#select30m').click
     fill_in 'duration-input', with: '12'
     click_button 'startbutton'
@@ -95,7 +105,7 @@ feature 'When starting a new meeting' do
   scenario 'user manually enters duration and then selects one', js: true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Laura'
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     fill_in 'duration-input', with: '75'
     find('#select30m').click
     click_button 'startbutton'

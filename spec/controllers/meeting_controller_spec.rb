@@ -12,12 +12,12 @@ RSpec.describe MeetingsController, type: :controller do
   end
   describe "GET show" do
     it "renders the show template" do
-      Meeting.create(nickname: "Matti", phone_number: "0401231234", duration: 20)
+      Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
       get :show, id: 1
       expect(response).to render_template("show")
     end
     it "redirects to root if no meeting found" do
-      Meeting.create(nickname: "Matti", phone_number: "0401231234", duration: 20)
+      Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
       @request.cookies['curr_me'] = "randomvalue"
       get :show, id: 123
       expect(response).to redirect_to(:root)
@@ -131,7 +131,7 @@ RSpec.describe MeetingsController, type: :controller do
       end
     end
     it "renders status page if hash found in cookies and database" do
-      @meeting = Meeting.create(nickname: "Matti", phone_number: "0401231234", duration: 20)
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -143,7 +143,7 @@ RSpec.describe MeetingsController, type: :controller do
 =begin
     it "should redirect to phone input if no user" do
       @request.cookies['ucd'] = ""
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       post :create, :meeting => meeting_params
       expect(response).to redirect_to("/users")
     end
@@ -151,31 +151,31 @@ RSpec.describe MeetingsController, type: :controller do
       u = User.find_by_code(@request.cookies['ucd'])
       u.credits = 0
       u.save
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       post :create, :meeting => meeting_params
       expect(response).to redirect_to("/credits")
     end
 =end
     it "should create new meeting with correct params" do
-        meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+        meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
         expect { post :create, :meeting => meeting_params }.to change(Meeting, :count).by(1)
     end
 =begin
     it "should cost one credit to create the meeting" do
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       expect { post :create, :meeting => meeting_params }.to change{User.find_by_code(@request.cookies['ucd']).credits}.by(-1)
     end
 =end
     it "should not create new meeting with negative duration" do
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => -1}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => -1}
       expect { post :create, :meeting => meeting_params }.to change(Meeting, :count).by(0)
     end
     it "should not create new meeting with duration over 24h" do
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 1440}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 1440}
       expect { post :create, :meeting => meeting_params }.to change(Meeting, :count).by(0)
     end
     it "should not create new meeting with string input duration" do
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => "sdfd"}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => "sdfd"}
       expect { post :create, :meeting => meeting_params }.to change(Meeting, :count).by(0)
     end
     it "should not create new meeting with invalid phone number" do
@@ -183,17 +183,17 @@ RSpec.describe MeetingsController, type: :controller do
       expect { post :create, :meeting => meeting_params }.to change(Meeting, :count).by(0)
     end
     it "should create a delayed job" do
-      meeting_params = {:nickname => "DelayedForEver", :phone_number => "0401231234", :duration => "1"}
+      meeting_params = {:nickname => "DelayedForEver", :phone_number => "9991231234", :duration => "1"}
       expect {post :create, :meeting => meeting_params}.to change {Delayed::Job.count}.by(2)
     end
     it "should run the delayed job" do
-      meeting_params = {:nickname => "BackgroundProcessed", :phone_number => "0401231234", :duration => "1"}
+      meeting_params = {:nickname => "BackgroundProcessed", :phone_number => "9991231234", :duration => "1"}
       Delayed::Worker.delay_jobs = false
       expect {post :create, :meeting => meeting_params}.to change {Delayed::Job.count}.by(0)
       Delayed::Worker.delay_jobs = true
     end
     it "should create a meeting_created impression" do
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       expect { post :create, :meeting => meeting_params }.to change(Impression, :count).by(2)
       expect(Impression.last.impression_type).to eq("meeting_created")
     end
@@ -201,7 +201,7 @@ RSpec.describe MeetingsController, type: :controller do
   describe "PUT update" do
     it "should update Meeting" do
       attr = { :nickname => "Pekka"}
-      @meeting = Meeting.create(nickname: "Matti", phone_number: "0401231234", duration: 20)
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
       put :update, id: @meeting.id, :meeting => attr
       @meeting.reload
       expect(@meeting.nickname).to eq("Pekka")
@@ -209,7 +209,7 @@ RSpec.describe MeetingsController, type: :controller do
     end
     it "should not update invalid meeting" do
       attr = { :duration => -23}
-      @meeting = Meeting.create(nickname: "Matti", phone_number: "0401231234", duration: 20)
+      @meeting = Meeting.create(nickname: "Matti", phone_number: "9991231234", duration: 20)
       put :update, id: @meeting.id, :meeting => attr
       @meeting.reload
       expect(@meeting.duration).to eq(20)
@@ -231,7 +231,7 @@ RSpec.describe MeetingsController, type: :controller do
       expect(response).to redirect_to("/credits")
     end
     it "should reduce the number of credits" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -239,19 +239,19 @@ RSpec.describe MeetingsController, type: :controller do
     end
 =end
     it "should remove incorrect cookie" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 1300)
       @request.cookies['curr_me'] = "dog treat"
       post :send_alert
       expect(@response.cookies['curr_me']).to equal(nil)
     end
     it "should redirect to meet creation when the user has an incorrect cookie" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 1300)
       @request.cookies['curr_me'] = "dog treat"
       post :send_alert
       expect(response).to redirect_to(:root)
     end
     it "should redirect to confirmation if correct cookie" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -259,7 +259,7 @@ RSpec.describe MeetingsController, type: :controller do
       expect(response).to redirect_to(:meetings_alert_confirm)
     end
     it "should create an alert_sent impression" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -270,14 +270,14 @@ RSpec.describe MeetingsController, type: :controller do
     end
     it "should not exceed maximum daily limit" do
       Meeting.stub(:max_per_user_per_day) {1}
-      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
       expect(Impression.where(:impression_type => "alert_sent").length).to eq(0)
       post :send_alert
       expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
-      @meeting = Meeting.create(nickname: "One that is not", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "One that is not", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -287,14 +287,14 @@ RSpec.describe MeetingsController, type: :controller do
     end
     it "should not exceed maximum total limit" do
       Meeting.stub(:max_total_per_day) {1}
-      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "One that is sent", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
       expect(Impression.where(:impression_type => "alert_sent").length).to eq(0)
       post :send_alert
       expect(Impression.where(:impression_type => "alert_sent").length).to eq(1)
-      @meeting = Meeting.create(nickname: "One that is not", phone_number: "0401231234", duration: 1300)
+      @meeting = Meeting.create(nickname: "One that is not", phone_number: "9991231234", duration: 1300)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -305,7 +305,7 @@ RSpec.describe MeetingsController, type: :controller do
   end
   describe "POST meeting_ok" do
     it "should remove cookie" do
-      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "0401231234", duration: 20)
+      @meeting = Meeting.create(nickname: "Cookie breaker", phone_number: "9991231234", duration: 20)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -313,7 +313,7 @@ RSpec.describe MeetingsController, type: :controller do
       expect(@response.cookies['curr_me']).to equal(nil)
     end
     it "should delete the meeting from database" do
-      @meeting = Meeting.create(nickname: "Testuser", phone_number: "0401231234", duration: 10)
+      @meeting = Meeting.create(nickname: "Testuser", phone_number: "9991231234", duration: 10)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -322,7 +322,7 @@ RSpec.describe MeetingsController, type: :controller do
     end
     it "should delete the associated delayed_job" do
       #To properly create a job the meeting has to be created via a post to create. Best not ask why.
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       post :create, :meeting => meeting_params
       @meeting = Meeting.find_by_nickname("Pekka")
       expect(Delayed::Job.all.length).to eq(2)
@@ -339,7 +339,7 @@ RSpec.describe MeetingsController, type: :controller do
       expect(response).to redirect_to(:root)
     end
     it "should create a meeting_ok impression" do
-      @meeting = Meeting.create(nickname: "Testuser", phone_number: "0401231234", duration: 10)
+      @meeting = Meeting.create(nickname: "Testuser", phone_number: "9991231234", duration: 10)
       @meeting.create_hashkey
       @request.cookies['curr_me'] = @meeting.hashkey
       @meeting.save
@@ -351,7 +351,7 @@ RSpec.describe MeetingsController, type: :controller do
 =begin
     it "should refund notification credits if not used" do
       #To properly create a job the meeting has to be created via a post to create. Best not ask why.
-      meeting_params = {:nickname => "Pekka", :phone_number => "0401231234", :duration => 30}
+      meeting_params = {:nickname => "Pekka", :phone_number => "9991231234", :duration => 30}
       post :create, :meeting => meeting_params
       @meeting = Meeting.find_by_nickname("Pekka")
       expect {post :meeting_ok}.to change{User.find_by_code(@request.cookies['ucd']).credits}.by(1)

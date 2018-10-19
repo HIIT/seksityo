@@ -17,9 +17,14 @@
       </div>
       <div class="field">
         <%= f.text_field :phone_number, :class => "textfield", placeholder: "#{t('phonenumber_placeholder')}", value: cookies['pnmr'] %>
-        <% if @meeting.errors.messages[:phone_number].any? %>
+        <% if @meeting.errors.messages[:phone_number].include? "Phone number is invalid." %>
             <div class="error-explanation">
               <p class="error-message"><%= t('phone_number_invalid') %></p>
+            </div>
+        <% end %>
+        <% if @meeting.errors.messages[:phone_number].include? "Country code missing." %>
+            <div class="error-explanation">
+              <p class="error-message"><%= t('county_code_missing') %></p>
             </div>
         <% end %>
       </div>

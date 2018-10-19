@@ -34,7 +34,7 @@ feature 'New meeting' do
     create_cookie('ucd', u.code)
     visit '/'
     fill_in 'meeting_nickname', with: "Turbo"
-    fill_in 'meeting_phone_number', with: '0401231234'
+    fill_in 'meeting_phone_number', with: '9991231234'
     fill_in 'duration-input', with: '3'
     click_button 'startbutton'
     visit '/meetings/new'
