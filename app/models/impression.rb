@@ -1,6 +1,6 @@
 class Impression < ActiveRecord::Base
   def self.countries()
-    return Impression.where.not(:impression_type => "cleared_obsolete_meetings").uniq.pluck(:country, :country_code)
+    return Impression.where.not(:impression_type => "cleared_obsolete_meetings").distinct.pluck(:country, :country_code)
   end
   def self.round(number)
     if number.to_f.nan?
@@ -18,7 +18,7 @@ class Impression < ActiveRecord::Base
     return message_sent().merge(in_country_during_interval(country_code, interval_start, interval_end))
   end
   def self.statuses()
-    return Impression.where(:impression_type => "alert_sent").or(Impression.where(:impression_type => "notification_sent")).uniq.pluck(:status)
+    return Impression.where(:impression_type => "alert_sent").or(Impression.where(:impression_type => "notification_sent")).distinct.pluck(:status)
   end
   def self.location_percentage(country_code, interval_start, interval_end)
     total = messages_sent_in_country_during_interval(country_code, interval_start, interval_end)
@@ -52,7 +52,7 @@ class Impression < ActiveRecord::Base
         stat["date"] = interval_start.to_date.to_s + " - " + interval_end.to_date.to_s
       end
       impressions = in_country_during_interval(country[1], interval_start, interval_end)
-      stat["views"] = impressions.where(:impression_type => "view").uniq.pluck(:session).count
+      stat["views"] = impressions.where(:impression_type => "view").distinct.pluck(:session).count
       stat["created"] = impressions.where(:impression_type => "meeting_created").count
       stat["confirmed"] = impressions.where(:impression_type => "meeting_ok").count
       stat["messages_sent"] = messages_sent_in_country_during_interval(country[1], interval_start, interval_end).count

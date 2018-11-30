@@ -89,6 +89,7 @@ end
 #Replace :webkit with :selenium or comment this line to go back to using selenium.
 Capybara.javascript_driver = :webkit
 
+Capybara.server = :webrick
 Capybara.server_port = 3001
 Capybara.app_host = 'http://localhost:3001'
 

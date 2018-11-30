@@ -54,7 +54,7 @@ feature 'When starting a new meeting' do
   scenario 'user can create a meeting with a kenyan phone number', js:true do
     visit '/meetings/new'
     fill_in 'meeting_nickname', with: 'Pekka'
-    fill_in 'meeting_phone_number', with: '+2541231234'
+    fill_in 'meeting_phone_number', with: '+254701123123'
     fill_in 'duration-input', with: '11'
     click_button 'startbutton'
 

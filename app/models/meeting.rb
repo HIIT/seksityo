@@ -100,7 +100,7 @@ class Meeting < ActiveRecord::Base
       impression.longitude = ((self.longitude.to_f*100.0).round / 100.0).to_s
     end
     #Update country code based on previous ones if not available otherwise
-    country = Impression.where(:session => session_hash).where.not(:country_code => nil).uniq.pluck(:country_code, :country).last
+    country = Impression.where(:session => session_hash).where.not(:country_code => nil).distinct.pluck(:country_code, :country).last
     if self.get_country_code.nil? && !country.nil?
       impression.country_code = country[0]
       impression.country = country[1]
